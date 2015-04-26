@@ -1,0 +1,70 @@
+#ifndef _CRT_SECURE_NO_WARNINGS							//ignores MSVC PROBLEM about using fopen
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
+#include<opencv2\imgproc\imgproc.hpp>
+#include<opencv\cv.h>
+#include<opencv2\highgui\highgui.hpp>
+#include<opencv2\core\core.hpp>
+
+#include<iostream>
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, const char** argv)
+{
+	Mat image;
+
+	VideoCapture cam(0);
+	
+	if(!cam.isOpened())											//controlling image opening process
+	{
+		cout<<"Cannot open the video camera"<<endl;
+		return -1;
+	}
+
+	double dWidth=cam.get(CV_CAP_PROP_FRAME_WIDTH);					//pobiera szerokosc wysokosc obrazka
+	double dHeight= cam.get(CV_CAP_PROP_FRAME_HEIGHT);
+	
+	
+	cout << "Frame size: " << dWidth << "x" << dHeight << endl;
+
+	namedWindow("MyVideo", CV_WINDOW_AUTOSIZE);						//okienko na obraz z kamery
+
+	while(1)
+	{
+		Mat frame;
+
+		bool bSuc= cam.read(frame);
+		if(!bSuc)
+		{
+			cout<<"Cannot read a frame from video stream"<<endl;
+			break;
+		}
+
+		
+
+
+		imshow("MyVideo", frame);
+
+
+
+		if (waitKey(30) == 27)
+		{
+			cout << "esc key is pressed" << endl;
+			break;
+		}
+		
+		
+		/*//copy webcam stream to image 
+		cam>>image;
+	//print image to screen
+		imshow("window",image);
+
+		//delay 33ms
+		waitKey(33);*/
+	}
+
+	return 1;
+}
